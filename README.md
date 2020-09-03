@@ -30,3 +30,4 @@ dump1090_messages_catched_count 1.006282e+06
 
 ### Grafana
 
+![Grafana](https://github.com/esin/dump1090-exporter/blob/imgs/imgs/grafana.png?raw=true)
