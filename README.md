@@ -1,5 +1,5 @@
 # dump1090-exporter
-Prometheus exporter for antirez/dump1090
+Prometheus exporter for [antirez/dump1090](https://github.com/antirez/dump1090)
 
 ### Exported information
 
