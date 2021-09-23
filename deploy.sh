@@ -1,6 +1,6 @@
 #!/bin/bash
 dt=$(date +%y%m%d%H%M)
-docker build -t dump1090-exporter:latest -t dump1090-exporter:$dt -f Dockerfile .
+docker build -t dump1090-exporter:latest -t dump1090-exporter:$dt -f Dockerfile --load .
 if [ $? -ne 0 ]; then
   exit 1;
 fi

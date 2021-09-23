@@ -20,10 +20,11 @@ type dump900AircraftStruct struct {
 	Now      float64 `json:"now"`
 	Messages int     `json:"messages"`
 	Aircraft []struct {
-		Hex            string        `json:"hex"`
+		Hex            string        `json:"hex,omitempty"`
 		Flight         string        `json:"flight,omitempty"`
 		AltBaro        int           `json:"alt_baro,omitempty"`
 		AltGeom        int           `json:"alt_geom,omitempty"`
+		Altitude       int           `json:"altitude,omitempty"`
 		Gs             float64       `json:"gs,omitempty"`
 		Ias            int           `json:"ias,omitempty"`
 		Tas            int           `json:"tas,omitempty"`
@@ -48,11 +49,11 @@ type dump900AircraftStruct struct {
 		NacV           int           `json:"nac_v,omitempty"`
 		Sil            int           `json:"sil,omitempty"`
 		SilType        string        `json:"sil_type,omitempty"`
-		Mlat           []interface{} `json:"mlat"`
-		Tisb           []interface{} `json:"tisb"`
-		Messages       int           `json:"messages"`
-		Seen           float64       `json:"seen"`
-		Rssi           float64       `json:"rssi"`
+		Mlat           []interface{} `json:"mlat,omitempty"`
+		Tisb           []interface{} `json:"tisb,omitempty"`
+		Messages       int           `json:"messages,omitempty"`
+		Seen           float64       `json:"seen,omitempty"`
+		Rssi           float64       `json:"rssi,omitempty"`
 		Emergency      string        `json:"emergency,omitempty"`
 		NavHeading     float64       `json:"nav_heading,omitempty"`
 		NicBaro        int           `json:"nic_baro,omitempty"`
@@ -67,7 +68,6 @@ var addr = flag.String("listen-address", ":9467",
 func main() {
 	flag.Parse()
 
-	
 	trackingACcount := prometheus.NewGauge(
 		prometheus.GaugeOpts{
 			Name: "dump1090_ac_tracking_now_count",
@@ -121,7 +121,12 @@ func main() {
 					}
 					aircraftFlight := reg.ReplaceAllString(aircraft.Flight, "")
 					geoHash := geohash.Encode(aircraft.Lat, aircraft.Lon)
-					trackingACs.WithLabelValues(aircraftFlight, geoHash, fmt.Sprintf("%2.6f", aircraft.Lat), fmt.Sprintf("%2.6f", aircraft.Lon), fmt.Sprintf("%d", aircraft.AltGeom), aircraft.Squawk).Set(1)
+					alt := aircraft.AltGeom
+					if aircraft.Altitude > 0 {
+						alt = aircraft.Altitude
+					}
+
+					trackingACs.WithLabelValues(aircraftFlight, geoHash, fmt.Sprintf("%2.6f", aircraft.Lat), fmt.Sprintf("%2.6f", aircraft.Lon), fmt.Sprintf("%d", alt), aircraft.Squawk).Set(1)
 					prometheus.Register(trackingACs)
 				}
 			}

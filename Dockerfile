@@ -1,4 +1,4 @@
-FROM golang:1.14 as builder
+FROM golang:1.17 as builder
 
 WORKDIR /src
 
@@ -13,11 +13,9 @@ ARG RUNENV
 RUN adduser --disabled-password --gecos "" --home "/tmp" --shell "/sbin/nologin" --no-create-home --uid "${UID}" "${USER}" && \
     CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags="-w -s" -o dump1090-exporter . 
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 WORKDIR /app
-RUN apt-get update && apt-get install curl ffmpeg -y && \
-    apt-get clean && apt-get autoremove
 
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
