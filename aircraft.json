@@ -1,9 +1,0 @@
-{ "now" : 1698751404.7,
-  "messages" : 718416,
-  "aircraft" : [
-    {"hex":"151ec2","squawk":"0726","flight":"SBI1010 ","altitude":2975,"category":"A3","mlat":[],"tisb":[],"messages":585,"seen":0.0,"rssi":-28.0},
-    {"hex":"152058","mlat":[],"tisb":[],"messages":21,"seen":278.2,"rssi":-33.9},
-    {"hex":"140b2e","mlat":[],"tisb":[],"messages":180,"seen":256.7,"rssi":-31.2},
-    {"hex":"151e14","mlat":[],"tisb":[],"messages":556,"seen":247.8,"rssi":-33.4}
-  ]
-}
