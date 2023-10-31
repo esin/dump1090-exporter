@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -90,16 +90,23 @@ func main() {
 		},
 		[]string{"flight", "geohash", "lat", "long", "altitude", "squawk"},
 	)
+
+	aircraftFile := os.Getenv("AIRCRAFT_JSON")
+	if len(aircraftFile) > 0 {
+		fmt.Println("AIRCRAFT_JSON:", aircraftFile)
+	} else {
+		aircraftFile = "/run/dump1090-fa/aircraft.json"
+	}
 	go func() {
 		for {
-			aircraftFile, err := os.Open("/run/dump1090-fa/aircraft.json")
+			aircraftFile, err := os.Open(aircraftFile)
 			if err != nil {
-				fmt.Println(err)
+				log.Fatalln(err)
 			}
 
 			defer aircraftFile.Close()
 
-			byteValue, _ := ioutil.ReadAll(aircraftFile)
+			byteValue, _ := io.ReadAll(aircraftFile)
 
 			var aircrafts dump900AircraftStruct
 
